@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Gemelos digitales: el espejo que piensa</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400..700&family=Oswald:wght@300..500&display=swap">
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--ink:#4332C4;--bg:linear-gradient(135deg,#F7F9E4 0%,#F3E9FB 40%,#F2D0EE 75%,#F0DACB 100%);--card:rgba(255,255,255,.62);--lav:rgba(214,196,242,.6);--head:#5030D6;--pink:#C23E7C;--teal:#1E8F80;--navbg:#F6EFFB;--line:rgba(67,50,196,.18)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ink:#CFC8FF;--bg:linear-gradient(135deg,#14112F 0%,#241748 55%,#34194F 100%);--card:rgba(255,255,255,.07);--lav:rgba(124,108,245,.2);--pink:#F08AB8;--teal:#62CDBE;--navbg:#1B1640;--line:rgba(207,200,255,.2)}}
+:root[data-theme="dark"]{--ink:#CFC8FF;--bg:linear-gradient(135deg,#14112F 0%,#241748 55%,#34194F 100%);--card:rgba(255,255,255,.07);--lav:rgba(124,108,245,.2);--pink:#F08AB8;--teal:#62CDBE;--navbg:#1B1640;--line:rgba(207,200,255,.2)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 70px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg) fixed;background-color:#F3E9FB;color:var(--ink);font:300 20px/1.5 'Oswald',system-ui,sans-serif;min-height:100%}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--navbg);z-index:20}
+h1,h2,h3{font-family:'Space Grotesk',system-ui,sans-serif;margin:0;line-height:1.1}
+h2{font-size:clamp(28px,4.4vw,44px);margin-bottom:18px}h3{font-size:21px;margin-bottom:6px}p{margin:0 0 12px}a{color:inherit}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--navbg);border-bottom:1px solid var(--line)}
+header b{font:700 17px 'Space Grotesk',sans-serif;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+nav{position:fixed;top:0;left:0;bottom:0;width:290px;padding:calc(76px + env(safe-area-inset-top,0px)) 14px 20px;overflow:auto;background:var(--navbg);border-right:1px solid var(--line);z-index:5;transform:translateX(-100%);transition:transform .25s}
+body.open nav{transform:none}
+.gh{display:flex;justify-content:space-between;width:100%;background:none;color:var(--ink);border-radius:12px;padding:10px 12px;font-weight:700;text-align:left}
+.gh::after{content:"▾"}.grp:not(.open) .gh::after{content:"▸"}
+.grp:not(.open) .gl{display:none}
+.gl a{display:block;padding:6px 12px 6px 22px;border-radius:10px;text-decoration:none;font-size:17px}
+.gl a.on{background:var(--head);color:#fff}
+main{padding:28px 20px 80px;max-width:980px;margin:0 auto}
+@media(min-width:1000px){body.open main{margin-left:310px;margin-right:auto}}
+.tag{font:500 13px 'Space Grotesk',sans-serif;letter-spacing:.2em;text-transform:uppercase;margin-bottom:12px}
+.dots{height:60px;width:200px;background:radial-gradient(var(--ink) 3px,transparent 4px) 0 0/36px 36px;opacity:.7;margin-bottom:10px}
+.hero h1{font-size:clamp(44px,9vw,100px)}.sub{font-size:28px}
+.orbs{position:relative;height:140px;margin:20px 0}.orbs i{position:absolute;border-radius:50%}
+.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));margin:20px 0}
+.card{background:var(--card);border-radius:24px;overflow:hidden;border:1px solid var(--line)}
+.card h3{background:var(--head);color:#fff;padding:14px 20px;font-size:19px}.card p{padding:14px 20px 4px}
+.box{background:var(--card);border-radius:24px;padding:20px 22px;border:1px solid var(--line)}
+button,.btn{font:500 16px 'Space Grotesk',sans-serif;cursor:pointer;border:0;border-radius:999px;padding:10px 18px;background:var(--head);color:#fff;text-decoration:none;display:inline-block}
+button.alt{background:var(--lav);color:var(--ink)}
+.steps button{border-radius:24px;text-align:left;padding:16px;background:var(--card);color:var(--ink);border:2px solid transparent;font-weight:400}
+.steps button.on{border-color:#E0699F;background:var(--lav)}.steps b{display:block;font-size:19px}
+.lab{font:500 12px 'Space Grotesk',sans-serif;letter-spacing:.15em;text-transform:uppercase;color:var(--pink)}.lab.d{color:var(--teal)}
+.tabs{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.bar{height:16px;border-radius:99px;background:var(--lav);margin:6px 0 12px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#E0699F;border-radius:99px;transition:width 1.2s}.in .bar i{width:var(--w)}
+.num{font:700 52px 'Space Grotesk',sans-serif}
+.pink{color:var(--pink)}.small{font-size:16px;opacity:.85}
+.card.dim{opacity:.3}ul{padding-left:22px}li{margin-bottom:8px}
+input,select{font:inherit;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink)}
+input{width:min(100%,440px)}
+.dark{background:#4332C4;color:#F3E9FB;border-radius:28px;padding:36px 28px}.dark h2{color:#fff}
+.dark input{color:#14112F;background:#F3E9FB}.dark button{background:#F4CE62;color:#14112F}
+.pn{display:flex;justify-content:space-between;margin-top:36px}
+.row{display:flex;gap:12px;align-items:center;margin-bottom:10px}.row span{flex:1}
+@media(prefers-reduced-motion:reduce){nav,.bar i{transition:none}}
+</style>
+</head>
+<body>
+<header><button class="alt" id="mn" aria-label="Abrir o cerrar el índice">☰ Índice</button><b>Gemelos digitales · el espejo que piensa</b><button class="alt" id="th" aria-label="Cambiar tema">◐</button></header>
+<nav aria-label="Índice">
+<div class="grp"><button class="gh">1 · Conceptualización</button><div class="gl"><a href="#inicio">Inicio</a><a href="#pregunta">Pregunta de la clase</a><a href="#concepto">Qué es un gemelo digital</a></div></div>
+<div class="grp"><button class="gh">2 · Funcionamiento</button><div class="gl"><a href="#ciclo">El ciclo que se repite</a></div></div>
+<div class="grp"><button class="gh">3 · Aplicaciones</button><div class="gl"><a href="#planeta">Ejemplo 1: el planeta</a><a href="#edificio">Ejemplo 2: edificio inteligente</a><a href="#cotidiano">En la vida diaria</a><a href="#educacion">En la educación</a></div></div>
+<div class="grp"><button class="gh">4 · Ventajas y desafíos</button><div class="gl"><a href="#balance">Ventajas y desafíos</a></div></div>
+<div class="grp"><button class="gh">5 · Noticia</button><div class="gl"><a href="#noticia">Medellín: gemelo digital</a></div></div>
+<div class="grp"><button class="gh">6 · Cierre</button><div class="gl"><a href="#respuesta">Nuestra respuesta</a><a href="#fuentes">Fuentes</a></div></div>
+</nav>
+<main>
+
+<section class="pg hero" id="inicio">
+<div class="dots"></div>
+<p class="tag">Fronteras de la informática · Informática y Educación</p>
+<h1>GEMELOS<br>DIGITALES</h1><p class="sub">El espejo que piensa</p>
+<p style="margin-top:32px"><b>Darling Muñoz</b> · el original &nbsp;|&nbsp; <b>Zuriel Maita</b> · el gemelo</p>
+<p><a class="btn" href="https://dimunoz-ship-it.github.io/gemeloLAB/" target="_blank" rel="noopener">Ver nuestro ejemplo: GemeloLAB ↗</a></p>
+</section>
+
+<section class="pg" id="pregunta" hidden>
+<p class="tag">Pregunta de la clase</p>
+<h2 style="font-size:clamp(34px,6vw,64px);margin-top:10vh">¿Cómo se construye y se actualiza una representación digital de un sistema real?</h2>
+</section>
+
+<section class="pg" id="concepto" hidden>
+<h2>Un gemelo digital es una copia que se mantiene al día</h2>
+<p>Es una representación electrónica de algo real —un edificio, un motor, un proceso, un cuerpo— que se alimenta con datos de eso real.</p>
+<div class="grid">
+<div class="card"><h3>Modelo</h3><p>La copia digital: su forma y su manera de comportarse.</p></div>
+<div class="card"><h3>Datos</h3><p>Sensores que miran lo real y envían lo que ocurre.</p></div>
+<div class="card"><h3>Sincronización</h3><p>La copia se actualiza con esos datos mientras lo real cambia.</p></div>
+</div>
+<p><b>Sin datos reales es solo una maqueta; sin modelo, son solo números.</b></p>
+<p>Sirve para observar, simular y anticipar el comportamiento de un sistema real mientras funciona.</p>
+<p class="small">Definición basada en NIST IR 8356 (2025).</p>
+</section>
+
+<section class="pg" id="ciclo" hidden>
+<h2>Cómo funciona: un ciclo que se repite</h2>
+<div class="grid steps">
+<button class="on"><span class="lab">Lo real</span><b>1. Sensores</b>Miden lo real: temperatura, movimiento, consumo.</button>
+<button><span class="lab">Lo real</span><b>2. Datos</b>Viajan por internet hasta el modelo.</button>
+<button><span class="lab d">Lo digital</span><b>3. Modelo</b>Se actualiza y refleja el estado de ahora.</button>
+<button><span class="lab d">Lo digital</span><b>4. Simulación</b>Se prueban cambios y se anticipa qué pasará.</button>
+</div>
+<p><button class="alt" id="play">▶ Recorrer el ciclo</button></p>
+<div class="box"><h3>Y el ciclo vuelve a lo real</h3><p id="cd">Lo que se aprende en el gemelo se usa para ajustar, reparar o decidir en el sistema de verdad, y los sensores siguen midiendo.</p></div>
+</section>
+
+<section class="pg" id="planeta" hidden>
+<p class="tag">Ejemplo 1</p>
+<h2>Un gemelo digital de todo el planeta</h2>
+<p>Destination Earth (DestinE), de la Unión Europea, simula el clima de la Tierra para anticipar eventos extremos.</p>
+<div class="tabs"><button data-t="Satélites del programa Copernicus, sensores en tierra e información de agencias.">Datos</button><button class="alt" data-t="El supercomputador LUMI, en Finlandia, con IA para acelerar el procesamiento.">Cerebro</button><button class="alt" data-t="Índice de estrés por calor en ciudades y vigilancia de las reservas de agua del Delta del Danubio.">Usos</button></div>
+<div class="box" id="tp">Satélites del programa Copernicus, sensores en tierra e información de agencias.</div>
+<p style="margin-top:14px"><a class="btn" href="https://prismera.destine.eu/?tooltip=0&amp;tooltipMulti=0&amp;sider=charts&amp;mode=default&amp;cards=present%2Cdiff%2Cfuture&amp;zoom=6.07&amp;lat=48.1573&amp;lng=1.8010&amp;story=heatwave&amp;time=2019-07-20T00%3A00%3A00&amp;variable=temperature&amp;compare=present-future" target="_blank" rel="noopener">Abrir el visor interactivo de DestinE ↗</a></p>
+<p class="small">El visor permite explorar simulaciones de eventos, como la ola de calor europea de 2019. Hoy hay 2 gemelos listos; el gemelo completo de la Tierra está previsto para 2030. Fuentes: MuyComputerPRO (2024), datos.gob.es, ECMWF.</p>
+</section>
+
+<section class="pg" id="edificio" hidden>
+<p class="tag">Ejemplo 2 · Visor interactivo</p>
+<h2>Gemelo digital de un edificio inteligente</h2>
+<p>SyntaxLab ofrece una demo interactiva en 3D de un edificio. Se abre en segundos desde el navegador.</p>
+<div class="grid">
+<div class="card"><h3>Qué puedes hacer</h3><p>Ver cada piso del edificio en 3D y monitorear sensores simulados en tiempo real.</p></div>
+<div class="card"><h3>Variables que puedes mover</h3><p>Temperatura, radiación solar, ocupación de personas, luces, aire acondicionado y niveles de CO₂, y observar cómo cambia el edificio.</p></div>
+</div>
+<p><a class="btn" href="https://syntaxlab.ae/demos/digital-twin" target="_blank" rel="noopener">Abrir la demo interactiva ↗</a></p>
+<p class="small">Los sensores de esta demo son simulados: sirve para ver cómo funciona un gemelo (sensores, modelo y simulación), no es un edificio real. Fuente: SyntaxLab.</p>
+</section>
+
+<section class="pg" id="cotidiano" hidden>
+<h2>¿Y en mi vida diaria? Lo usamos sin verlo</h2>
+<p>Casi nunca tenemos un gemelo propio, pero dependemos de servicios que los usan.</p>
+<div class="grid">
+<div class="card"><h3>Viajar en avión</h3><p>Fabricantes como GE usan gemelos de motores para predecir cuánto durarán sus componentes (Deloitte).</p></div>
+<div class="card"><h3>El agua que llega a casa</h3><p>EPM desarrolló un gemelo de la red primaria de acueducto del Valle de Aburrá.</p></div>
+<div class="card"><h3>Lluvias y emergencias</h3><p>Ciudades como Medellín simulan inundaciones antes de que ocurran.</p></div>
+<div class="card"><h3>Salud</h3><p>En España, sensores y cámaras 3D crean un gemelo del movimiento del paciente para decidir entre prevención o cirugía.</p></div>
+<div class="card"><h3>Carros</h3><p>El vehículo puede avisar al taller cuando un componente empieza a fallar (AWS).</p></div>
+</div>
+<p><b>Casi siempre los usan empresas, hospitales y gobiernos, no personas en casa.</b></p>
+<p class="small">Fuentes: Deloitte, Bancolombia, Infobae/EFE (17 nov 2026) y AWS.</p>
+</section>
+
+<section class="pg" id="educacion" hidden>
+<h2>Analizar: los gemelos digitales en la educación</h2>
+<div class="grid">
+<div class="box"><div class="num">68%</div><div class="bar" style="--w:68%"><i></i></div>de los estudios revisados usa simulaciones de entornos de aprendizaje.</div>
+<div class="box"><div class="num">52%</div><div class="bar" style="--w:52%"><i></i></div>hace seguimiento del desempeño de los estudiantes.</div>
+<div class="box"><div class="num">44%</div><div class="bar" style="--w:44%"><i></i></div>busca personalizar el aprendizaje.</div>
+</div>
+<div class="grid">
+<div><h3>Beneficios</h3><p>Más autonomía y motivación, menos costo de laboratorios físicos y clases híbridas o remotas.</p></div>
+<div><h3 class="pink">Retos</h3><p>Conexión a internet, costos, formación docente y ética.</p></div>
+</div>
+<p class="small">Pinto-Almeida, Castellanos y Yumbla (2026), Springer: revisión de estudios de 2018 a 2024. La adopción aún es temprana y dispersa.</p>
+</section>
+
+<section class="pg" id="balance" hidden>
+<h2>Ventajas y desafíos</h2>
+<div class="tabs"><button data-b="a">Ver ambos</button><button class="alt" data-b="v">Ventajas</button><button class="alt" data-b="d">Desafíos</button></div>
+<div class="grid">
+<div class="box" id="bv"><h3>Ventajas</h3><ul><li>Probar cambios sin arriesgar lo real</li><li>Vigilar a distancia y en tiempo real</li><li>Arreglar antes de que algo falle</li><li>Optimizar el rendimiento</li></ul></div>
+<div class="box" id="bd"><h3 class="pink">Desafíos</h3><ul><li>Seguridad y confianza: proteger los datos y la copia</li><li>Estándares compartidos para que los sistemas se entiendan</li><li>Costo: Destination Earth supera los 300 millones de euros</li><li>Es una aproximación, nunca la realidad completa</li></ul></div>
+</div>
+<p class="small">Fuentes: NIST IR 8356 (2025), AWS, MuyComputerPRO (2024).</p>
+</section>
+
+<section class="pg" id="noticia" hidden>
+<p class="tag">Noticia real</p>
+<h2>Medellín crea un gemelo digital para anticipar emergencias por lluvias</h2>
+<div class="grid">
+<div class="card"><h3>Qué</h3><p>Medellín presentó un gemelo digital: una plataforma interactiva que combina imágenes aéreas, modelos 3D, mapas satelitales y datos oficiales.</p></div>
+<div class="card"><h3>Dónde</h3><p>Medellín, Colombia, en el sector de Altos de Calasanz (piloto).</p></div>
+<div class="card"><h3>Quiénes</h3><p>Planeación, el DAGRD, EPM, SIATA y Esri Colombia, entre otros.</p></div>
+<div class="card"><h3>Resultados</h3><p>Simula lluvias de 20, 30 y 40 milímetros sobre la quebrada La Iguaná y muestra por dónde se mueve el agua, qué zonas corren riesgo de desbordamiento y cómo se afectaría la infraestructura cercana.</p></div>
+</div>
+<p><a class="btn" href="https://www.elcolombiano.com/tecnologia/gemelo-digital-medellin-como-funciona-replica-virtual-ciudad-anticipacion-emergencias-planeacion-urbana-BA27144041" target="_blank" rel="noopener">Leer la noticia ↗</a> <a class="btn" href="https://gemelodigitalmedellin-gov-esri-co.hub.arcgis.com/pages/planificacin-urbana-inteligente" target="_blank" rel="noopener">Ver el visor ↗</a></p>
+<p class="small">Fuente: El Colombiano (abril 2025). El enlace del visor sale del artículo.</p>
+</section>
+
+<section class="pg" id="respuesta" hidden>
+<div class="dark">
+<p class="tag" style="color:#F4CE62">Nuestra respuesta</p>
+<h2>Se construye con un modelo y datos de sensores, y se actualiza sincronizándolos todo el tiempo.</h2>
+<p>Sirve para observar, simular y anticipar un sistema real, y abre posibilidades para la informática y la sociedad: ciudades más seguras, mejor salud y educación con simulación.</p>
+<p><b>Para ustedes:</b> si nuestra universidad tuviera un gemelo digital, ¿qué le preguntarían primero?</p>
+<p><input id="q" placeholder="Escribe tu pregunta…" maxlength="140"> <button id="qa">Agregar</button></p>
+<ul id="ql"></ul>
+</div>
+</section>
+
+<section class="pg" id="fuentes" hidden>
+<h2>Fuentes</h2>
+<ul class="small" style="font-size:17px">
+<li>NIST (2025). Security and Trust Considerations for Digital Twin Technology (NIST IR 8356). <a href="https://www.nist.gov/news-events/news/2025/02/security-and-trust-considerations-digital-twin-technology-nist-releases-ir" target="_blank" rel="noopener">nist.gov</a></li>
+<li>Amazon Web Services. What is a digital twin? <a href="https://aws.amazon.com/what-is/digital-twin" target="_blank" rel="noopener">aws.amazon.com</a></li>
+<li>MuyComputerPRO (11 jun 2024). La Unión Europea lanza DestinE. <a href="https://www.muycomputerpro.com/2024/06/11/union-europea-destine-gemelo-digital-ia-tierra" target="_blank" rel="noopener">muycomputerpro.com</a></li>
+<li>datos.gob.es. Destination Earth. <a href="https://datos.gob.es/es/blog/destination-earth-un-gemelo-digital-de-la-tierra-para-un-futuro-sostenible" target="_blank" rel="noopener">datos.gob.es</a> · ECMWF: <a href="https://destine.ecmwf.int/news/new-app-enables-users-to-explore-destines-kilometre-scale-climate-storylines/" target="_blank" rel="noopener">app de DestinE</a></li>
+<li>Pinto-Almeida, Castellanos y Yumbla (2026). Digital Twins in Higher Education. Springer. <a href="https://link.springer.com/chapter/10.1007/978-3-032-10310-9_21" target="_blank" rel="noopener">link.springer.com</a></li>
+<li>El Colombiano (abr 2025). Gemelo digital de Medellín. <a href="https://www.elcolombiano.com/tecnologia/gemelo-digital-medellin-como-funciona-replica-virtual-ciudad-anticipacion-emergencias-planeacion-urbana-BA27144041" target="_blank" rel="noopener">elcolombiano.com</a></li>
+<li>SyntaxLab. Demo interactiva de gemelo digital 3D de un edificio. <a href="https://syntaxlab.ae/demos/digital-twin" target="_blank" rel="noopener">syntaxlab.ae</a></li>
+<li>Deloitte. Understanding digital twin technology. <a href="https://www2.deloitte.com/insights/us/en/focus/signals-for-strategists/understanding-digital-twin-technology.html" target="_blank" rel="noopener">deloitte.com</a></li>
+<li>Bancolombia. Gemelos digitales (EPM). <a href="https://www.bancolombia.com/empresas/capital-inteligente/tendencias/innovacion/gemelos-digitales-ia-sostenibilidad-corporativa" target="_blank" rel="noopener">bancolombia.com</a></li>
+<li>Infobae/EFE (17 nov 2026). Gemelo digital que mejora la prevención. <a href="https://www.infobae.com/espana/agencias/2026/11/17/el-avance-del-gemelo-digital-que-mejora-la-prevencion-anticipa-lesiones-y-evita-cirugias/" target="_blank" rel="noopener">infobae.com</a></li>
+</ul>
+<p class="small">Las metas a futuro (gemelo completo de la Tierra en 2030) son anuncios, no resultados.</p>
+</section>
+
+<div class="pn"><button class="alt" id="pv">← Anterior</button><button id="nx">Siguiente →</button></div>
+</main>
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const pg=$$('.pg'),ids=pg.map(p=>p.id);let cur=0;
+if(innerWidth>=1000)document.body.classList.add('open');
+function go(){let h=location.hash.slice(1);if(!ids.includes(h))h='inicio';cur=ids.indexOf(h);
+pg.forEach(p=>{p.hidden=p.id!==h;p.classList.remove('in')});
+requestAnimationFrame(()=>requestAnimationFrame(()=>$('#'+h).classList.add('in')));
+$$('nav a').forEach(a=>{const on=a.hash==='#'+h;a.classList.toggle('on',on);if(on)a.closest('.grp').classList.add('open')});
+$('#pv').style.visibility=cur?'visible':'hidden';$('#nx').style.visibility=cur<ids.length-1?'visible':'hidden';
+scrollTo(0,0);if(innerWidth<1000)document.body.classList.remove('open')}
+addEventListener('hashchange',go);go();
+$('#mn').onclick=()=>document.body.classList.toggle('open');
+$$('.gh').forEach(b=>b.onclick=()=>b.parentNode.classList.toggle('open'));
+$('#pv').onclick=()=>{location.hash=ids[cur-1]};$('#nx').onclick=()=>{location.hash=ids[cur+1]};
+addEventListener('keydown',e=>{if(/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName))return;if(e.key==='ArrowRight'&&cur<ids.length-1)location.hash=ids[cur+1];if(e.key==='ArrowLeft'&&cur>0)location.hash=ids[cur-1]});
+$('#th').onclick=()=>{const r=document.documentElement,d=r.dataset.theme==='dark'||(!r.dataset.theme&&matchMedia('(prefers-color-scheme: dark)').matches);r.dataset.theme=d?'light':'dark'};
+const cdt=["Sensores: miden lo real (temperatura, movimiento, consumo).","Datos: viajan por internet hasta el modelo.","Modelo: se actualiza y refleja el estado de ahora.","Simulación: se prueban cambios y se anticipa qué pasará."],back=$('#cd').textContent;
+let tm=null;const stp=$$('.steps button');
+function pick(i){stp.forEach((b,j)=>b.classList.toggle('on',i===j));$('#cd').textContent=i<4?cdt[i]:back}
+stp.forEach((b,i)=>b.onclick=()=>{clearInterval(tm);tm=null;$('#play').textContent='▶ Recorrer el ciclo';pick(i)});
+$('#play').onclick=function(){if(tm){clearInterval(tm);tm=null;this.textContent='▶ Recorrer el ciclo';return}let i=0;this.textContent='■ Detener';pick(0);tm=setInterval(()=>{i=(i+1)%5;pick(i)},2200)};
+function tabs(sel,fn){$$(sel+' .tabs button').forEach(b=>b.onclick=()=>{$$(sel+' .tabs button').forEach(x=>x.className='alt');b.className='';fn(b)})}
+tabs('#planeta',b=>{$('#tp').textContent=b.dataset.t});
+tabs('#balance',b=>{const k=b.dataset.b;$('#bv').hidden=k==='d';$('#bd').hidden=k==='v'});
+function addq(){const v=$('#q').value.trim();if(!v)return;const li=document.createElement('li');li.textContent=v;$('#ql').appendChild(li);$('#q').value=''}
+$('#qa').onclick=addq;$('#q').onkeydown=e=>{if(e.key==='Enter')addq()};
+</script>
+</body>
+</html>
